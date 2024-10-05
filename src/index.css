@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .flex-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .flex-between {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+
+body {
+    @apply text-black bg-white dark:bg-black dark:text-white;
+}
+
+.game-char-input {
+    @apply size-20 rounded-xl bg-transparent border-2 border-yellow-400 dark:border-yellow-300 text-7xl font-mono text-yellow-400 dark:text-yellow-300 focus:outline-none text-center
+}
+
+.game-char-input {
+    @apply flex items-center justify-center text-yellow-600 capitalize bg-transparent border-2 border-yellow-600 size-32 rounded-3xl dark:border-yellow-300 dark:text-yellow-300 text-7xl;
+}
