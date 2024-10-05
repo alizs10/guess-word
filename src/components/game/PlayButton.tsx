@@ -1,7 +1,12 @@
 import { useContext } from "react";
 import { GameContext } from "../../context/GameContext";
 
-export default function PlayButton() {
+type ButtonProps = {
+  text: "Play" | "Restart";
+}
+
+
+export default function PlayButton({ text = 'Play' }: ButtonProps) {
 
   const { startGame } = useContext(GameContext);
 
@@ -12,7 +17,7 @@ export default function PlayButton() {
   return (
     <button onClick={handleClick} className="mx-auto mt-32 bg-gray-200 rounded-full size-32 flex-center dark:bg-gray-800">
       <h1 className="text-3xl">
-        Play
+        {text}
       </h1>
     </button>
   )

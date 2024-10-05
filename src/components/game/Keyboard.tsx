@@ -4,14 +4,18 @@ import { GameContext } from "../../context/GameContext";
 export default function Keyboard() {
 
 
-    const { word, chooseChar, shuffledChars, playerGuess } = useContext(GameContext);
+    const { unChooseChar, chooseChar, shuffledChars, playerGuess } = useContext(GameContext);
 
 
     const handleCharClick = (char: string, index: number) => {
+
+        if (isSelected(char, index)) {
+            unChooseChar(index)
+            return
+        }
+
         chooseChar(char, index);
     }
-
-    console.log(playerGuess)
 
     function isSelected(char: string, index: number) {
         return playerGuess.some(guess => guess.char === char && guess.index === index);

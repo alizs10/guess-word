@@ -21,10 +21,19 @@ body {
     @apply text-black bg-white dark:bg-black dark:text-white;
 }
 
+/* 
 .game-char-input {
     @apply size-20 rounded-xl bg-transparent border-2 border-yellow-400 dark:border-yellow-300 text-7xl font-mono text-yellow-400 dark:text-yellow-300 focus:outline-none text-center
-}
+} */
 
 .game-char-input {
-    @apply flex items-center justify-center text-yellow-600 capitalize bg-transparent border-2 border-yellow-600 size-32 rounded-3xl dark:border-yellow-300 dark:text-yellow-300 text-7xl;
+    @apply flex items-center justify-center capitalize bg-transparent border-2 size-32 rounded-3xl text-7xl;
+}
+
+.game-char-input-default {
+    @apply border-yellow-600 text-yellow-600 dark:border-yellow-300 dark:text-yellow-300;
+}
+
+.game-char-input-correct {
+    @apply border-emerald-600 text-emerald-600 dark:border-emerald-300 dark:text-emerald-300
 }
