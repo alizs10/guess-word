@@ -1,4 +1,4 @@
-import { House, Info, RotateCcw, Undo2 } from "lucide-react";
+import { House, Info, RotateCcw } from "lucide-react";
 import PlayButton from "../game/PlayButton";
 import { useContext } from "react";
 import { GameContext } from "../../context/GameContext";
@@ -31,7 +31,9 @@ export default function MenuBar() {
                 {gameState === 'still' ? "Start New Game" : gameState === 'playing' ? (<RotateCcw size={25} />) : gameState === 'won' ? "Restart" : ""}
             </PlayButton>
 
-            <button onClick={handleAboutClick} className="container bg-container"><Info size={25} /></button>
+            <button onClick={handleAboutClick} className="container h-full bg-container">
+                <Info size={25} />
+            </button>
         </div>
     )
 }

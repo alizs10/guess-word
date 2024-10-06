@@ -39,7 +39,7 @@ body {
 }
 
 .game-menu-bar {
-    @apply fixed flex items-center -translate-x-1/2 bottom-3 left-1/2 gap-x-2;
+    @apply fixed flex h-12 -translate-x-1/2 bottom-3 left-1/2 gap-x-2;
 }
 
 .container {
