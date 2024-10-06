@@ -5,7 +5,7 @@ import { GameContextProvider } from "./context/GameContext"
 function App() {
 
   return (
-    <main className="p-3">
+    <main className="h-screen p-3">
       <Header />
 
       <GameContextProvider>

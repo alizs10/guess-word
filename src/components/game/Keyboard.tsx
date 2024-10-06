@@ -4,7 +4,7 @@ import { GameContext } from "../../context/GameContext";
 export default function Keyboard() {
 
 
-    const { unChooseChar, chooseChar, shuffledChars, playerGuess } = useContext(GameContext);
+    const { unChooseChar, chooseChar, shuffledChars, playerGuess, difficulty } = useContext(GameContext);
 
 
     const handleCharClick = (char: string, index: number) => {
@@ -22,10 +22,10 @@ export default function Keyboard() {
     }
 
     return (
-        <div className="grid w-full grid-cols-5 gap-2">
+        <div className={`grid ${difficulty === 2 ? 'grid-cols-7' : 'grid-cols-6'} gap-2 p-3 bg-container rounded-3xl`}>
 
             {shuffledChars.map((char, index) => (
-                <button onClick={() => handleCharClick(char, index)} key={index} className={`col-span-1 font-mono capitalize  text-7xl aspect-square rounded-3xl flex-center ${isSelected(char, index) ? "bg-green-500" : 'bg-gray-200 dark:bg-gray-800'}`}>
+                <button onClick={() => handleCharClick(char, index)} key={index} className={`col-span-1 font-sans capitalize text-xl aspect-square rounded-xl flex-center ${isSelected(char, index) ? "bg-emerald-400" : 'bg-gray-100 dark:bg-gray-800'}`}>
                     {char}
                 </button>
             ))}

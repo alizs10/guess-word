@@ -1,4 +1,4 @@
-import { Moon, SunDim } from "lucide-react";
+import { Moon, SunMedium } from "lucide-react";
 import useTheme from "../../hooks/useTheme";
 
 
@@ -13,8 +13,8 @@ export default function ThemeToggle() {
     }
 
     return (
-        <button onClick={toggleTheme} className="bg-gray-200 size-10 rounded-xl flex-center dark:bg-gray-800">
-            {theme === "dark" ? <Moon size={20} /> : <SunDim size={20} />}
+        <button onClick={toggleTheme} className="p-3 rounded-xl flex-center">
+            {theme === "dark" ? <Moon size={25} /> : <SunMedium size={25} />}
         </button>
     )
 }

@@ -2,11 +2,11 @@ import { useContext } from "react";
 import { GameContext } from "../../context/GameContext";
 
 type ButtonProps = {
-  text: "Play" | "Restart";
+  children: string | JSX.Element
 }
 
 
-export default function PlayButton({ text = 'Play' }: ButtonProps) {
+export default function PlayButton({ children }: ButtonProps) {
 
   const { startGame } = useContext(GameContext);
 
@@ -15,9 +15,9 @@ export default function PlayButton({ text = 'Play' }: ButtonProps) {
   }
 
   return (
-    <button onClick={handleClick} className="mx-auto mt-32 bg-gray-200 rounded-full size-32 flex-center dark:bg-gray-800">
-      <h1 className="text-3xl">
-        {text}
+    <button onClick={handleClick} className="container rounded-full flex-center bg-primary w-fit">
+      <h1 className="px-2 text-lg whitespace-nowrap">
+        {children}
       </h1>
     </button>
   )

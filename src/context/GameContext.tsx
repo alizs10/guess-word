@@ -1,10 +1,10 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { shuffle } from "../helpers/helpers";
 import { generate } from "random-words";
 
 type GameStateType = "still" | "playing" | "won" | "lost";
 export type DifficultyType = 0 | 1 | 2;
-export type LimitType = 15 | 20 | 25;
+export type LimitType = 18 | 24 | 28;
 
 
 type PlayerGuessType = {
@@ -20,6 +20,9 @@ type GameContextType = {
 
     limit: LimitType;
     setLimit: (limit: LimitType) => void;
+
+    timer: number;
+    setTimer: (time: number) => void;
 
     word: string;
     setWord: (word: string) => void;
@@ -47,8 +50,11 @@ const initialState: GameContextType = {
     gameState: "still",
     setGameState: () => { },
 
-    limit: 15,
+    limit: 18,
     setLimit: () => { },
+
+    timer: 0,
+    setTimer: () => { },
 
     word: "",
     setWord: () => { },
@@ -77,13 +83,15 @@ export const GameContext = createContext<GameContextType>(initialState);
 export function GameContextProvider({ children }: { children: React.ReactNode }) {
 
     const [gameState, setGameState] = useState<GameStateType>("still");
-    const [limit, setLimit] = useState<LimitType>(15);
+    const [limit, setLimit] = useState<LimitType>(18);
     const [word, setWord] = useState<string>("sky");
     const [shuffledChars, setShuffledChars] = useState<string[]>([]);
     const [playerGuess, setPlayerGuess] = useState<PlayerGuessType[]>([]);
     const [difficulty, setDifficulty] = useState<DifficultyType>(0);
     const [guessCounter, setGuessCounter] = useState(0);
+    const [timer, setTimer] = useState(0)
 
+    const timerRef = useRef<number | null>(null)
 
     function chooseChar(char: string, index: number) {
 
@@ -105,12 +113,21 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
 
 
     function unChooseChar(index: number) {
-        setPlayerGuess(prevState => prevState.filter(guess => guess.index !== index))
+        setPlayerGuess(prevState => {
+
+            let isCorrect = prevState.find(guess => guess.index === index)
+
+            if (isCorrect?.isCorrect) {
+                return prevState
+            }
+
+            return prevState.filter(guess => guess.index !== index)
+        })
     }
 
     function startGame() {
 
-        let wordMinLength = difficulty === 0 ? 3 : difficulty === 1 ? 5 : 7
+        let wordMinLength = difficulty === 0 ? 4 : difficulty === 1 ? 6 : 8
         let wordMaxLength = difficulty === 0 ? 5 : difficulty === 1 ? 7 : 9
 
         let newWord = generate({ minLength: wordMinLength, maxLength: wordMaxLength })
@@ -122,6 +139,14 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
 
         setPlayerGuess([]);
         setGuessCounter(0)
+        setTimer(0)
+
+        if (timerRef.current)
+            clearInterval(timerRef.current)
+
+        timerRef.current = setInterval(() => {
+            setTimer(prevState => prevState + 1)
+        }, 1000)
 
         setGameState("playing");
     }
@@ -142,19 +167,24 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
         let correctChars = playerGuess.filter(guess => guess.isCorrect).length;
 
         if (correctChars === word.length) {
+
+            if (timerRef.current)
+                clearInterval(timerRef.current)
+
             setGameState("won")
         }
 
     }, [playerGuess])
 
+
     useEffect(() => {
 
         if (difficulty === 0) {
-            setLimit(15)
+            setLimit(18)
         } else if (difficulty === 1) {
-            setLimit(20)
+            setLimit(24)
         } else if (difficulty === 2) {
-            setLimit(25)
+            setLimit(28)
         }
 
     }, [difficulty])
@@ -169,7 +199,8 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
             guess,
             guessCounter, setGuessCounter,
             difficulty, setDifficulty,
-            limit, setLimit
+            limit, setLimit,
+            timer, setTimer
         }}>
             {children}
         </GameContext.Provider>

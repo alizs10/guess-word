@@ -10,6 +10,10 @@ export default function GuessButton() {
     }
 
     return (
-        <button onClick={handleClick} className="px-5 py-3 mx-auto mt-10 text-2xl text-white bg-emerald-600 dark:bg-emerald-400 dark:text-black rounded-3xl w-fit">Guess</button>
+        <button onClick={handleClick} className="container text-lg text-white bg-emerald-600 dark:bg-emerald-400 dark:text-black w-fit">
+            <span className="px-2">
+                Guess
+            </span>
+        </button>
     )
 }

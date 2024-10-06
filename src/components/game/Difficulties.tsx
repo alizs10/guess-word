@@ -11,7 +11,7 @@ export default function Difficulties() {
 
     const { difficulty, setDifficulty } = useContext(GameContext);
     const [left, setLeft] = useState<number>(0);
-    const [width, setWidth] = useState<string>('0');
+    const [width, setWidth] = useState<string>('');
 
 
     function onSwitch(val: DifficultyType) {
@@ -31,13 +31,11 @@ export default function Difficulties() {
         }
 
         if (difficulty === 1) {
-            // setLeft('calc(30%)')
             setLeft(mediumBtnRef.current?.offsetLeft || 0)
             setWidth((mediumBtnWidth / containerWidth) * 100 + '%')
         }
 
         if (difficulty === 2) {
-            // setLeft('66%')
             setLeft(hardBtnRef.current?.offsetLeft || 0)
             setWidth((hardBtnWidth / containerWidth) * 100 + '%')
         }
@@ -46,26 +44,22 @@ export default function Difficulties() {
     }, [difficulty])
 
     return (
-        <div className={`w-fit flex flex-col gap-y-4 border border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-800 text-slate-500 rounded-xl p-3`}>
+        <div className={`w-fit mx-auto mt-44 flex flex-col gap-y-4`}>
 
-            <label className={`text-base text-center text-slate-600 dark:text-slate-300 capitalize`}>select difficulty</label>
+            <label className={`text-3xl text-center text-slate-600 dark:text-slate-300 capitalize`}>select difficulty</label>
 
-            <div ref={btnsContainerRef} className="relative flex p-2 rounded-xl flex-nowrap gap-x-2 bg-slate-300 text-slate-700 dark:text-white dark:bg-slate-700">
-                <button ref={easyBtnRef} onClick={() => onSwitch(0)} className={`z-10 px-2 py-1 text-xs capitalize transition-all duration-300 ${difficulty === 0 && 'text-white'}`}>Easy</button>
+            <div ref={btnsContainerRef} className="relative flex p-3 rounded-3xl flex-nowrap gap-x-2 text-slate-700 dark:text-white bg-container">
+                <button ref={easyBtnRef} onClick={() => onSwitch(0)} className={`z-10 px-2 py-1 text-lg capitalize transition-all duration-300 ${difficulty === 0 && 'text-white'}`}>Easy</button>
 
-                <button ref={mediumBtnRef} onClick={() => onSwitch(1)} className={`z-10 px-2 py-1 text-xs capitalize transition-all duration-300 ${difficulty === 1 && 'text-white'}`}>Medium</button>
+                <button ref={mediumBtnRef} onClick={() => onSwitch(1)} className={`z-10 px-2 py-1 text-lg capitalize transition-all duration-300 ${difficulty === 1 && 'text-white'}`}>Medium</button>
 
-                <button ref={hardBtnRef} onClick={() => onSwitch(2)} className={`z-10 px-2 py-1 text-xs capitalize transition-all duration-300 ${difficulty === 2 && 'text-white'}`}>Hard</button>
+                <button ref={hardBtnRef} onClick={() => onSwitch(2)} className={`z-10 px-2 py-1 text-lg capitalize transition-all duration-300 ${difficulty === 2 && 'text-white'}`}>Hard</button>
 
                 <motion.div
-                    // initial={{ left, width }}
+                    initial={false}
+                    animate={{ width: width ? width : '23%', left: left ? left : 12 }}
+                    className={`absolute z-0 px-3 py-1 text-lg text-blue-900 bg-blue-900 rounded-xl inset-2.5 flex-center dark:bg-blue-600 dark:text-blue-600`}>
 
-                    // animate={{ right: difficulty === 0 ? 'auto' : '0.25rem', left: difficulty === 0 ? '0.25rem' : 'auto' }}
-
-                    className={`absolute z-0 px-3 py-1 text-xs transition-all duration-300 text-blue-900 bg-blue-900 rounded-lg inset-1 w-fit flex-center dark:bg-blue-600 dark:text-blue-600 ${difficulty === 0 ? '' : difficulty === 1 ? 'mx-auto' : 'ml-auto'}`}>
-                    {difficulty === 0 && 'Easy'}
-                    {difficulty === 1 && 'Medium'}
-                    {difficulty === 2 && 'Hard'}
                 </motion.div>
             </div>
         </div>
