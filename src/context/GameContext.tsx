@@ -1,7 +1,10 @@
 import { createContext, useEffect, useState } from "react";
 import { shuffle } from "../helpers/helpers";
+import { generate } from "random-words";
 
 type GameStateType = "still" | "playing" | "won" | "lost";
+export type DifficultyType = 0 | 1 | 2;
+
 
 type PlayerGuessType = {
     char: string;
@@ -23,6 +26,9 @@ type GameContextType = {
     playerGuess: PlayerGuessType[];
     setPlayerGuess: (guess: PlayerGuessType[]) => void;
 
+    difficulty: DifficultyType;
+    setDifficulty: (type: DifficultyType) => void;
+
     chooseChar: (char: string, index: number) => void;
     unChooseChar: (index: number) => void;
 
@@ -42,6 +48,9 @@ const initialState: GameContextType = {
 
     guessCounter: 0,
     setGuessCounter: () => { },
+
+    difficulty: 0,
+    setDifficulty: () => { },
 
     playerGuess: [],
     setPlayerGuess: () => { },
@@ -65,6 +74,7 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
     const [word, setWord] = useState<string>("sky");
     const [shuffledChars, setShuffledChars] = useState<string[]>([]);
     const [playerGuess, setPlayerGuess] = useState<PlayerGuessType[]>([]);
+    const [difficulty, setDifficulty] = useState<DifficultyType>(0);
     const [guessCounter, setGuessCounter] = useState(0);
 
 
@@ -93,10 +103,14 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
 
     function startGame() {
 
-        let newWord = "sky"
+        let wordMinLength = difficulty === 0 ? 3 : difficulty === 1 ? 5 : 7
+        let wordMaxLength = difficulty === 0 ? 5 : difficulty === 1 ? 7 : 9
+
+        let newWord = generate({ minLength: wordMinLength, maxLength: wordMaxLength })
+        newWord = typeof newWord === 'object' ? newWord[0] : newWord
         setWord(newWord);
 
-        const shuffledChars = shuffle(word, limit);
+        const shuffledChars = shuffle(newWord, limit);
         setShuffledChars(shuffledChars);
 
         setPlayerGuess([]);
@@ -134,7 +148,8 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
             shuffledChars, setShuffledChars,
             chooseChar, unChooseChar, startGame,
             guess,
-            guessCounter, setGuessCounter
+            guessCounter, setGuessCounter,
+            difficulty, setDifficulty
         }}>
             {children}
         </GameContext.Provider>

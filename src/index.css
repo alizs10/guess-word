@@ -27,7 +27,7 @@ body {
 } */
 
 .game-char-input {
-    @apply flex items-center justify-center capitalize bg-transparent border-2 size-32 rounded-3xl text-7xl;
+    @apply col-span-1 flex items-center justify-center capitalize bg-transparent border-2 size-32 rounded-3xl text-7xl;
 }
 
 .game-char-input-default {
