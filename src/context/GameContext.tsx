@@ -4,6 +4,7 @@ import { generate } from "random-words";
 
 type GameStateType = "still" | "playing" | "won" | "lost";
 export type DifficultyType = 0 | 1 | 2;
+export type LimitType = 15 | 20 | 25;
 
 
 type PlayerGuessType = {
@@ -16,6 +17,9 @@ type PlayerGuessType = {
 type GameContextType = {
     gameState: GameStateType;
     setGameState: (state: GameStateType) => void;
+
+    limit: LimitType;
+    setLimit: (limit: LimitType) => void;
 
     word: string;
     setWord: (word: string) => void;
@@ -43,6 +47,9 @@ const initialState: GameContextType = {
     gameState: "still",
     setGameState: () => { },
 
+    limit: 15,
+    setLimit: () => { },
+
     word: "",
     setWord: () => { },
 
@@ -69,8 +76,8 @@ export const GameContext = createContext<GameContextType>(initialState);
 
 export function GameContextProvider({ children }: { children: React.ReactNode }) {
 
-    const limit = 15;
     const [gameState, setGameState] = useState<GameStateType>("still");
+    const [limit, setLimit] = useState<LimitType>(15);
     const [word, setWord] = useState<string>("sky");
     const [shuffledChars, setShuffledChars] = useState<string[]>([]);
     const [playerGuess, setPlayerGuess] = useState<PlayerGuessType[]>([]);
@@ -140,6 +147,18 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
 
     }, [playerGuess])
 
+    useEffect(() => {
+
+        if (difficulty === 0) {
+            setLimit(15)
+        } else if (difficulty === 1) {
+            setLimit(20)
+        } else if (difficulty === 2) {
+            setLimit(25)
+        }
+
+    }, [difficulty])
+
     return (
         <GameContext.Provider value={{
             gameState, setGameState,
@@ -149,7 +168,8 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
             chooseChar, unChooseChar, startGame,
             guess,
             guessCounter, setGuessCounter,
-            difficulty, setDifficulty
+            difficulty, setDifficulty,
+            limit, setLimit
         }}>
             {children}
         </GameContext.Provider>
