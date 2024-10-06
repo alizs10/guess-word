@@ -3,13 +3,19 @@ import PlayButton from "../game/PlayButton";
 import { useContext } from "react";
 import { GameContext } from "../../context/GameContext";
 import GuessButton from "../game/GuessButton";
+import { AppContext } from "../../context/AppContext";
 
 export default function MenuBar() {
 
     const { gameState, setGameState } = useContext(GameContext)
+    const { setAboutVis } = useContext(AppContext)
 
     function handleBack() {
         setGameState("still")
+    }
+
+    function handleAboutClick() {
+        setAboutVis(true)
     }
 
     return (
@@ -25,7 +31,7 @@ export default function MenuBar() {
                 {gameState === 'still' ? "Start New Game" : gameState === 'playing' ? (<RotateCcw size={25} />) : gameState === 'won' ? "Restart" : ""}
             </PlayButton>
 
-            <button className="container bg-container"><Info size={25} /></button>
+            <button onClick={handleAboutClick} className="container bg-container"><Info size={25} /></button>
         </div>
     )
 }
