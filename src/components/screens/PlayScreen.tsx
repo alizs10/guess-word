@@ -17,7 +17,7 @@ export default function PlayScreen() {
     return (
         <div className="mt-2">
             <CharInputs />
-            <div className="fixed flex flex-col gap-y-2 left-3 right-3 bottom-20">
+            <div className="fixed max-w-[600px] flex flex-col gap-y-2 left-1/2 -translate-x-1/2 w-full px-3 bottom-20">
                 <div className="flex-between">
                     <Timer />
                     <div className="flex gap-x-1">

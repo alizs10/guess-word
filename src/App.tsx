@@ -1,5 +1,4 @@
 import About from "./components/about/About"
-import Modal from "./components/common/Modal"
 import GameContainer from "./components/game/GameContainer"
 import Header from "./components/header/Header"
 import { AppContextProvider } from "./context/AppContext"
@@ -9,7 +8,7 @@ function App() {
 
   return (
     <AppContextProvider>
-      <main className="h-screen p-3">
+      <main className="h-screen p-3 max-w-[600px] mx-auto">
         <Header />
 
         <GameContextProvider>

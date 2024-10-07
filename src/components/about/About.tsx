@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import Modal from "../common/Modal";
 import { AppContext } from "../../context/AppContext";
+import TriangleDesign from "../TriangleDesign";
 
 export default function About() {
 
@@ -33,6 +34,8 @@ export default function About() {
                     <br />
                     version: 1.0.0
                 </p>
+
+                <TriangleDesign />
             </div>
         </Modal>
     )

@@ -10,7 +10,7 @@ export default function GuessButton() {
     }
 
     return (
-        <button onClick={handleClick} className="container text-lg text-white bg-emerald-600 dark:bg-emerald-400 dark:text-black w-fit">
+        <button onClick={handleClick} className="container text-lg text-white bg-emerald-500 dark:text-black w-fit">
             <span className="px-2">
                 Guess
             </span>

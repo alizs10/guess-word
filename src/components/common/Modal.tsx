@@ -2,7 +2,7 @@ import { createPortal } from "react-dom"
 import { AnimatePresence, motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 import { swipeableConfig } from "../../lib/swipeable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type ModalProps = {
   children: JSX.Element;
@@ -32,6 +32,13 @@ export default function Modal({ children, isOpen, onClose }: ModalProps) {
     ...swipeableConfig,
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+  }, [isOpen])
 
   return createPortal(
     <AnimatePresence mode="wait">
@@ -48,10 +55,12 @@ export default function Modal({ children, isOpen, onClose }: ModalProps) {
               event.stopPropagation()
             }}
             transition={{ duration: moving ? 0.1 : .3, bounce: 'none' }}
-            {...handlers}
-            className={`fixed top-auto z-[9991] left-0 right-0 bottom-0 rounded-t-3xl bg-container flex flex-col`}>
 
-            <div className="absolute w-1/3 h-1 -translate-x-1/2 bg-gray-400 rounded-full top-2.5 left-1/2 dark:bg-gray-500"></div>
+            className={`fixed max-w-[600px]  top-auto z-[9991] left-1/2 w-full -translate-x-1/2 bottom-0 rounded-t-3xl bg-container flex flex-col`}>
+
+            <div {...handlers} className="absolute top-0 w-1/3 p-3 -translate-x-1/2 bg-transparent left-1/2">
+              <div className="w-full h-1 bg-gray-400 rounded-full dark:bg-gray-500"></div>
+            </div>
 
             {children}
 

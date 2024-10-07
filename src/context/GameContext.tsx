@@ -209,7 +209,7 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
     }
 
     useEffect(() => {
-
+        if (gameData.word.length === 0) return
         let correctChars = gameData.playerGuess.filter(guess => guess.isCorrect).length;
 
         if (correctChars === gameData.word.length) {
@@ -217,6 +217,7 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
             if (timerRef.current)
                 clearInterval(timerRef.current)
 
+            console.log("this happens")
             setGameState("won")
         }
 
