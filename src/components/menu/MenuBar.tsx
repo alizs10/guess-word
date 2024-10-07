@@ -7,11 +7,11 @@ import { AppContext } from "../../context/AppContext";
 
 export default function MenuBar() {
 
-    const { gameState, setGameState } = useContext(GameContext)
+    const { gameState, confirmBack } = useContext(GameContext)
     const { setAboutVis } = useContext(AppContext)
 
     function handleBack() {
-        setGameState("still")
+        confirmBack()
     }
 
     function handleAboutClick() {

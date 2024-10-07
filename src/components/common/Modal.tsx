@@ -2,7 +2,7 @@ import { createPortal } from "react-dom"
 import { AnimatePresence, motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 import { swipeableConfig } from "../../lib/swipeable";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 type ModalProps = {
   children: JSX.Element;
@@ -18,18 +18,20 @@ export default function Modal({ children, isOpen, onClose }: ModalProps) {
   const handlers = useSwipeable({
     onSwiping: (eventData) => {
       const { initial, deltaY } = eventData;
-      setY(initial[0] + deltaY)
+      setY(initial[1] + deltaY)
       setMoving(true)
     },
-    onTouchEndOrOnMouseUp: () => {
+    onSwipedDown: (eventData) => {
+      const { deltaY } = eventData;
       setMoving(false)
-      const windowHeight = window.innerHeight;
-      if (y > 2 * windowHeight / 3) {
+
+      if (deltaY > 100) {
         onClose()
       }
     },
     ...swipeableConfig,
   });
+
 
   return createPortal(
     <AnimatePresence mode="wait">
@@ -47,7 +49,6 @@ export default function Modal({ children, isOpen, onClose }: ModalProps) {
             }}
             transition={{ duration: moving ? 0.1 : .3, bounce: 'none' }}
             {...handlers}
-
             className={`fixed top-auto z-[9991] left-0 right-0 bottom-0 rounded-t-3xl bg-container flex flex-col`}>
 
             <div className="absolute w-1/3 h-1 -translate-x-1/2 bg-gray-400 rounded-full top-2.5 left-1/2 dark:bg-gray-500"></div>

@@ -42,8 +42,16 @@ type GameContextType = {
     shuffledChars: string[];
     setShuffledChars: (chars: string[]) => void;
 
+    restartConfirmVis: boolean;
+    setRestartConfirmVis: (mode: boolean) => void;
+
+    backConfirmVis: boolean;
+    setBackConfirmVis: (mode: boolean) => void;
+
     startGame: () => void;
     guess: () => void;
+    confirmRestart: () => void;
+    confirmBack: () => void;
 }
 
 const initialState: GameContextType = {
@@ -74,8 +82,16 @@ const initialState: GameContextType = {
     shuffledChars: [],
     setShuffledChars: () => { },
 
+    restartConfirmVis: false,
+    setRestartConfirmVis: () => { },
+
+    backConfirmVis: false,
+    setBackConfirmVis: () => { },
+
     startGame: () => { },
     guess: () => { },
+    confirmRestart: () => { },
+    confirmBack: () => { }
 }
 
 export const GameContext = createContext<GameContextType>(initialState);
@@ -90,6 +106,8 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
     const [difficulty, setDifficulty] = useState<DifficultyType>(0);
     const [guessCounter, setGuessCounter] = useState(0);
     const [timer, setTimer] = useState(0)
+    const [restartConfirmVis, setRestartConfirmVis] = useState(false)
+    const [backConfirmVis, setBackConfirmVis] = useState(false)
 
     const timerRef = useRef<number | null>(null)
 
@@ -162,6 +180,14 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
         setGuessCounter(prevState => prevState + 1)
     }
 
+    function confirmRestart() {
+        setRestartConfirmVis(true)
+    }
+
+    function confirmBack() {
+        setBackConfirmVis(true)
+    }
+
     useEffect(() => {
 
         let correctChars = playerGuess.filter(guess => guess.isCorrect).length;
@@ -200,7 +226,11 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
             guessCounter, setGuessCounter,
             difficulty, setDifficulty,
             limit, setLimit,
-            timer, setTimer
+            timer, setTimer,
+            restartConfirmVis, setRestartConfirmVis,
+            confirmRestart,
+            backConfirmVis, setBackConfirmVis,
+            confirmBack
         }}>
             {children}
         </GameContext.Provider>

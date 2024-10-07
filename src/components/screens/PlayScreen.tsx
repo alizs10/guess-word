@@ -5,6 +5,8 @@ import GuessCounter from "../game/GuessCounter"
 import Difficulty from "../game/Difficulty"
 import Keyboard from "../game/Keyboard"
 import Timer from "../game/Timer"
+import RestartConfirm from "../confirm/RestartConfirm"
+import BackConfirm from "../confirm/BackConfirm"
 
 export default function PlayScreen() {
 
@@ -25,6 +27,9 @@ export default function PlayScreen() {
                 </div>
                 <Keyboard />
             </div>
+
+            <RestartConfirm />
+            <BackConfirm />
         </div>
     )
 }

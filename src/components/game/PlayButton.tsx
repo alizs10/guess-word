@@ -8,9 +8,15 @@ type ButtonProps = {
 
 export default function PlayButton({ children }: ButtonProps) {
 
-  const { startGame } = useContext(GameContext);
+  const { startGame, gameState, confirmRestart } = useContext(GameContext);
 
   const handleClick = () => {
+
+    if (gameState === 'playing') {
+      confirmRestart()
+      return
+    }
+
     startGame()
   }
 
