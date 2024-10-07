@@ -4,14 +4,14 @@ import { GameContext } from "../../context/GameContext";
 
 export default function BackConfirm() {
 
-    const { backConfirmVis, setBackConfirmVis, setGameState } = useContext(GameContext)
+    const { backConfirmVis, setBackConfirmVis, holdGame } = useContext(GameContext)
 
     function handleCancel() {
         setBackConfirmVis(false)
     }
 
     function handleConfirm() {
-        setGameState("still")
+        holdGame()
         setBackConfirmVis(false)
     }
 
@@ -23,7 +23,7 @@ export default function BackConfirm() {
                 </h1>
 
                 <p className="text-lg leading-6 text-justify">
-                    Do you really want to go home? You have not completed the game yet. You won't be able to resume it later.
+                    Do you really want to go home? You have not completed the game yet. Don't worry you will be able to resume it later.
                 </p>
             </div>
         </Dialog>

@@ -6,7 +6,7 @@ export default function StillScreen() {
 
     const { gameState } = useContext(GameContext)
 
-    if (gameState !== "still") return
+    if (!['still', 'hold'].includes(gameState)) return
 
     return (
         <Difficulties />

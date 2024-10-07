@@ -58,7 +58,7 @@ export default function Difficulties() {
                 <motion.div
                     initial={false}
                     animate={{ width: width ? width : '23%', left: left ? left : 12 }}
-                    className={`absolute z-0 px-3 py-1 text-lg text-blue-900 bg-blue-900 rounded-xl inset-2.5 flex-center dark:bg-blue-600 dark:text-blue-600`}>
+                    className={`absolute z-0 px-3 py-1 text-lg  bg-blue-800 rounded-xl inset-2.5 flex-center dark:bg-blue-600 dark:text-blue-600`}>
 
                 </motion.div>
             </div>

@@ -2,7 +2,7 @@ import { createContext, useEffect, useRef, useState } from "react";
 import { shuffle } from "../helpers/helpers";
 import { generate } from "random-words";
 
-type GameStateType = "still" | "playing" | "won" | "lost";
+type GameStateType = "still" | "hold" | "playing" | "won" | "lost";
 export type DifficultyType = 0 | 1 | 2;
 export type LimitType = 18 | 24 | 28;
 
@@ -52,6 +52,8 @@ type GameContextType = {
     guess: () => void;
     confirmRestart: () => void;
     confirmBack: () => void;
+    holdGame: () => void;
+    continueGame: () => void;
 }
 
 const initialState: GameContextType = {
@@ -91,7 +93,10 @@ const initialState: GameContextType = {
     startGame: () => { },
     guess: () => { },
     confirmRestart: () => { },
-    confirmBack: () => { }
+    confirmBack: () => { },
+    holdGame: () => { },
+    continueGame: () => { },
+
 }
 
 export const GameContext = createContext<GameContextType>(initialState);
@@ -180,6 +185,21 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
         setGuessCounter(prevState => prevState + 1)
     }
 
+    function holdGame() {
+        if (timerRef.current)
+            clearInterval(timerRef.current)
+
+        setGameState("hold")
+    }
+
+    function continueGame() {
+        timerRef.current = setInterval(() => {
+            setTimer(prevState => prevState + 1)
+        }, 1000)
+
+        setGameState("playing")
+    }
+
     function confirmRestart() {
         setRestartConfirmVis(true)
     }
@@ -230,7 +250,8 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
             restartConfirmVis, setRestartConfirmVis,
             confirmRestart,
             backConfirmVis, setBackConfirmVis,
-            confirmBack
+            confirmBack,
+            holdGame, continueGame
         }}>
             {children}
         </GameContext.Provider>
