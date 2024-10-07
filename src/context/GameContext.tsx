@@ -1,5 +1,5 @@
 import { createContext, useEffect, useRef, useState } from "react";
-import { shuffle } from "../helpers/helpers";
+import { addGameToHistory, shuffle } from "../helpers/helpers";
 import { generate } from "random-words";
 
 type TGameState = "still" | "hold" | "playing" | "won" | "lost";
@@ -14,7 +14,7 @@ type TPlayerGuess = {
     place: number;
 }
 
-type TGameData = {
+export type TGameData = {
     word: string;
     shuffledChars: string[];
     playerGuess: TPlayerGuess[];
@@ -217,8 +217,15 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
             if (timerRef.current)
                 clearInterval(timerRef.current)
 
-            console.log("this happens")
+
             setGameState("won")
+            addGameToHistory({
+                word: gameData.word,
+                difficulty: gameData.difficulty,
+                guessCounter: gameData.guessCounter,
+                timer: gameData.timer,
+                id: new Date().getTime()
+            })
         }
 
     }, [gameData.playerGuess])

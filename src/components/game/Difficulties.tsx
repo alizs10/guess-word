@@ -5,7 +5,7 @@ import { type TDifficulty, GameContext } from "../../context/GameContext";
 export default function Difficulties() {
 
     const { difficulty, setDifficulty } = useContext(GameContext);
-    const [left, setLeft] = useState(difficulty === 0 ? '0.75rem' : difficulty === 1 ? '.25rem' : '10.25rem')
+    const [left, setLeft] = useState(difficulty === 0 ? '0.75rem' : difficulty === 1 ? '4.25rem' : '10.25rem')
     const [width, setWidth] = useState(difficulty === 0 ? '3.5rem' : difficulty === 1 ? '6rem' : '4rem')
 
     function setStyles(type: TDifficulty) {

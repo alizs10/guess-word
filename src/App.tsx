@@ -1,4 +1,6 @@
 import About from "./components/about/About"
+import ClearHistoryConfirm from "./components/confirm/ClearHistoryConfirm"
+import GameHistory from "./components/game-history/GameHistory"
 import GameContainer from "./components/game/GameContainer"
 import Header from "./components/header/Header"
 import { AppContextProvider } from "./context/AppContext"
@@ -8,16 +10,18 @@ function App() {
 
   return (
     <AppContextProvider>
-      <main className="h-screen p-3 max-w-[600px] mx-auto">
-        <Header />
+      <GameContextProvider>
+        <main className="h-screen p-3 max-w-[600px] mx-auto">
 
-        <GameContextProvider>
+          <Header />
           <GameContainer />
-        </GameContextProvider>
+          <About />
 
-        <About />
+          <GameHistory />
+          <ClearHistoryConfirm />
 
-      </main>
+        </main>
+      </GameContextProvider>
     </AppContextProvider>
   )
 }
