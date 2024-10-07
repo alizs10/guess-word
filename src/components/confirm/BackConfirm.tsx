@@ -16,7 +16,7 @@ export default function BackConfirm() {
     }
 
     return (
-        <Dialog isOpen={backConfirmVis} onClose={handleCancel} cancel={{ label: 'Cancel', onClick: handleCancel }} confirm={{ label: 'Yes, Back', onClick: handleConfirm }}>
+        <Dialog isOpen={backConfirmVis} onClose={handleCancel} cancel={{ label: 'Cancel', onClick: handleCancel }} confirm={{ label: 'Go Home', onClick: handleConfirm }}>
             <div className="flex flex-col gap-y-3">
                 <h1 className="text-3xl text-gray-700 dark:text-gray-300">
                     Are You Sure?

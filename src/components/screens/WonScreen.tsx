@@ -6,17 +6,17 @@ import Timer from "../game/Timer"
 
 export default function WonScreen() {
 
-    const { gameState, word } = useContext(GameContext)
+    const { gameState, gameData } = useContext(GameContext)
 
     if (gameState !== "won") return
 
     return (
         <div className="flex-col gap-4 p-5 mt-20 rounded-2xl flex-center">
 
-            <h1 className="font-bold uppercase text-7xl text-emerald-600 dark:text-emerald-400">{word}</h1>
+            <h1 className="font-bold uppercase text-7xl text-emerald-600 dark:text-emerald-400">{gameData.word}</h1>
 
             <div className="flex gap-2">
-                <Timer/>
+                <Timer />
                 <GuessCounter />
                 <Difficulty />
             </div>

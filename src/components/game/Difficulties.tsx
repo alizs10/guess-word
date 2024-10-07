@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { useContext, useEffect, useRef, useState } from "react";
-import { type DifficultyType, GameContext } from "../../context/GameContext";
+import { type TDifficulty, GameContext } from "../../context/GameContext";
 
 export default function Difficulties() {
 
@@ -14,7 +14,7 @@ export default function Difficulties() {
     const [width, setWidth] = useState<string>('');
 
 
-    function onSwitch(val: DifficultyType) {
+    function onSwitch(val: TDifficulty) {
         setDifficulty(val);
     }
 

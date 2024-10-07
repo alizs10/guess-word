@@ -3,7 +3,7 @@ import { GameContext } from "../../context/GameContext"
 
 export default function GuessCounter() {
 
-    const { guessCounter } = useContext(GameContext)
+    const { guessCounter } = useContext(GameContext).gameData
 
     return (
         <div className="container flex h-fit w-fit bg-container">

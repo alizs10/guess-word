@@ -2,45 +2,43 @@ import { createContext, useEffect, useRef, useState } from "react";
 import { shuffle } from "../helpers/helpers";
 import { generate } from "random-words";
 
-type GameStateType = "still" | "hold" | "playing" | "won" | "lost";
-export type DifficultyType = 0 | 1 | 2;
-export type LimitType = 18 | 24 | 28;
+type TGameState = "still" | "hold" | "playing" | "won" | "lost";
+export type TDifficulty = 0 | 1 | 2;
+type TLimit = 18 | 24 | 28;
 
 
-type PlayerGuessType = {
+type TPlayerGuess = {
     char: string;
     index: number;
     isCorrect: boolean;
     place: number;
 }
 
-type GameContextType = {
-    gameState: GameStateType;
-    setGameState: (state: GameStateType) => void;
-
-    limit: LimitType;
-    setLimit: (limit: LimitType) => void;
-
-    timer: number;
-    setTimer: (time: number) => void;
-
+type TGameData = {
     word: string;
-    setWord: (word: string) => void;
-
+    shuffledChars: string[];
+    playerGuess: TPlayerGuess[];
     guessCounter: number;
-    setGuessCounter: (value: number) => void;
+    timer: number;
+    difficulty: TDifficulty;
+}
 
-    playerGuess: PlayerGuessType[];
-    setPlayerGuess: (guess: PlayerGuessType[]) => void;
+type GameContextType = {
+    gameState: TGameState;
+    setGameState: (state: TGameState) => void;
 
-    difficulty: DifficultyType;
-    setDifficulty: (type: DifficultyType) => void;
+    limit: TLimit;
+    setLimit: (limit: TLimit) => void;
+
+    gameData: TGameData;
+    setGameData: (data: TGameData) => void;
+
+
+    difficulty: TDifficulty;
+    setDifficulty: (type: TDifficulty) => void;
 
     chooseChar: (char: string, index: number) => void;
     unChooseChar: (index: number) => void;
-
-    shuffledChars: string[];
-    setShuffledChars: (chars: string[]) => void;
 
     restartConfirmVis: boolean;
     setRestartConfirmVis: (mode: boolean) => void;
@@ -63,26 +61,21 @@ const initialState: GameContextType = {
     limit: 18,
     setLimit: () => { },
 
-    timer: 0,
-    setTimer: () => { },
-
-    word: "",
-    setWord: () => { },
-
-    guessCounter: 0,
-    setGuessCounter: () => { },
+    gameData: {
+        word: "",
+        shuffledChars: [],
+        playerGuess: [],
+        guessCounter: 0,
+        timer: 0,
+        difficulty: 0,
+    },
+    setGameData: () => { },
 
     difficulty: 0,
     setDifficulty: () => { },
 
-    playerGuess: [],
-    setPlayerGuess: () => { },
-
     chooseChar: () => { },
     unChooseChar: () => { },
-
-    shuffledChars: [],
-    setShuffledChars: () => { },
 
     restartConfirmVis: false,
     setRestartConfirmVis: () => { },
@@ -103,14 +96,27 @@ export const GameContext = createContext<GameContextType>(initialState);
 
 export function GameContextProvider({ children }: { children: React.ReactNode }) {
 
-    const [gameState, setGameState] = useState<GameStateType>("still");
-    const [limit, setLimit] = useState<LimitType>(18);
-    const [word, setWord] = useState<string>("sky");
-    const [shuffledChars, setShuffledChars] = useState<string[]>([]);
-    const [playerGuess, setPlayerGuess] = useState<PlayerGuessType[]>([]);
-    const [difficulty, setDifficulty] = useState<DifficultyType>(0);
-    const [guessCounter, setGuessCounter] = useState(0);
-    const [timer, setTimer] = useState(0)
+    const [gameState, setGameState] = useState<TGameState>("still");
+    const [limit, setLimit] = useState<TLimit>(18);
+    const [difficulty, setDifficulty] = useState<TDifficulty>(0);
+
+    const [gameData, setGameData] = useState<TGameData>({
+        word: "",
+        shuffledChars: [],
+        playerGuess: [],
+        guessCounter: 0,
+        timer: 0,
+        difficulty: 0,
+    })
+
+    // const [word, setWord] = useState<string>("sky");
+    // const [shuffledChars, setShuffledChars] = useState<string[]>([]);
+    // const [playerGuess, setPlayerGuess] = useState<TPlayerGuess[]>([]);
+    // const [guessCounter, setGuessCounter] = useState(0);
+    // const [timer, setTimer] = useState(0)
+
+
+
     const [restartConfirmVis, setRestartConfirmVis] = useState(false)
     const [backConfirmVis, setBackConfirmVis] = useState(false)
 
@@ -118,33 +124,33 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
 
     function chooseChar(char: string, index: number) {
 
-        if (playerGuess.length === word.length) return;
+        if (gameData.playerGuess.length === gameData.word.length) return;
 
 
-        setPlayerGuess((prevState) => {
+        setGameData((prevState) => {
+            let playerGuess = prevState.playerGuess
+            let possiblePlaces = [...Array(prevState.word.length).keys()]; // [0,1,2]
 
-            let possiblePlaces = [...Array(word.length).keys()]; // [0,1,2]
-
-            for (let guessObj of prevState) {
+            for (let guessObj of playerGuess) {
                 possiblePlaces = possiblePlaces.filter(place => place !== guessObj.place)
-
             }
 
-            return [...prevState, { char, index, isCorrect: false, place: possiblePlaces[0] }]
+            return { ...prevState, playerGuess: [...playerGuess, { char, index, isCorrect: false, place: possiblePlaces[0] }] }
         });
     }
 
 
     function unChooseChar(index: number) {
-        setPlayerGuess(prevState => {
+        setGameData(prevState => {
+            let playerGuess = prevState.playerGuess
 
-            let isCorrect = prevState.find(guess => guess.index === index)
+            let isCorrect = playerGuess.find(guess => guess.index === index)
 
             if (isCorrect?.isCorrect) {
                 return prevState
             }
 
-            return prevState.filter(guess => guess.index !== index)
+            return { ...prevState, playerGuess: playerGuess.filter(guess => guess.index !== index) }
         })
     }
 
@@ -155,34 +161,28 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
 
         let newWord = generate({ minLength: wordMinLength, maxLength: wordMaxLength })
         newWord = typeof newWord === 'object' ? newWord[0] : newWord
-        setWord(newWord);
-
         const shuffledChars = shuffle(newWord, limit);
-        setShuffledChars(shuffledChars);
+        // setGameData(prevState => ({...prevState, word: newWord}));
 
-        setPlayerGuess([]);
-        setGuessCounter(0)
-        setTimer(0)
+        setGameData(prevState => ({ ...prevState, shuffledChars, word: newWord, playerGuess: [], guessCounter: 0, timer: 0, difficulty }));
 
         if (timerRef.current)
             clearInterval(timerRef.current)
 
         timerRef.current = setInterval(() => {
-            setTimer(prevState => prevState + 1)
+            setGameData(prevState => ({ ...prevState, timer: prevState.timer + 1 }))
         }, 1000)
 
         setGameState("playing");
     }
 
     function guess(): void {
-        if (playerGuess.length !== word.length) return
+        if (gameData.playerGuess.length !== gameData.word.length) return
 
-        let wordArr = word.split("")
+        let wordArr = gameData.word.split("")
 
+        setGameData(prevState => ({ ...prevState, playerGuess: prevState.playerGuess.filter(guess => guess.char === wordArr[guess.place]).map(guess => ({ ...guess, isCorrect: guess.char === wordArr[guess.place] })), guessCounter: prevState.guessCounter + 1 }))
 
-        setPlayerGuess(prevState => prevState.filter(guess => guess.char === wordArr[guess.place]).map(guess => ({ ...guess, isCorrect: guess.char === wordArr[guess.place] })))
-
-        setGuessCounter(prevState => prevState + 1)
     }
 
     function holdGame() {
@@ -194,7 +194,7 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
 
     function continueGame() {
         timerRef.current = setInterval(() => {
-            setTimer(prevState => prevState + 1)
+            setGameData(prevState => ({ ...prevState, timer: prevState.timer + 1 }))
         }, 1000)
 
         setGameState("playing")
@@ -210,9 +210,9 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
 
     useEffect(() => {
 
-        let correctChars = playerGuess.filter(guess => guess.isCorrect).length;
+        let correctChars = gameData.playerGuess.filter(guess => guess.isCorrect).length;
 
-        if (correctChars === word.length) {
+        if (correctChars === gameData.word.length) {
 
             if (timerRef.current)
                 clearInterval(timerRef.current)
@@ -220,7 +220,7 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
             setGameState("won")
         }
 
-    }, [playerGuess])
+    }, [gameData.playerGuess])
 
 
     useEffect(() => {
@@ -238,15 +238,11 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
     return (
         <GameContext.Provider value={{
             gameState, setGameState,
-            word, setWord,
-            playerGuess, setPlayerGuess,
-            shuffledChars, setShuffledChars,
+            gameData, setGameData,
             chooseChar, unChooseChar, startGame,
             guess,
-            guessCounter, setGuessCounter,
             difficulty, setDifficulty,
             limit, setLimit,
-            timer, setTimer,
             restartConfirmVis, setRestartConfirmVis,
             confirmRestart,
             backConfirmVis, setBackConfirmVis,

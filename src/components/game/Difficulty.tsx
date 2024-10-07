@@ -3,7 +3,7 @@ import { GameContext } from "../../context/GameContext"
 
 export default function Difficulty() {
 
-    const { difficulty } = useContext(GameContext)
+    const { difficulty } = useContext(GameContext).gameData
 
     return (
         <div className="container flex h-fit w-fit gap-x-1 bg-container">

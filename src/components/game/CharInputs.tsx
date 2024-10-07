@@ -3,7 +3,7 @@ import { GameContext } from "../../context/GameContext";
 
 export default function CharInputs() {
 
-    const { word, playerGuess } = useContext(GameContext);
+    const { word, playerGuess } = useContext(GameContext).gameData;
 
     return (
         <div className="grid items-center justify-center w-full grid-cols-5 gap-2 rounded-2xl md:grid-cols-7 xl:grid-cols-9">

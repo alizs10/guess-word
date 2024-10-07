@@ -4,7 +4,9 @@ import { GameContext } from "../../context/GameContext";
 export default function Keyboard() {
 
 
-    const { unChooseChar, chooseChar, shuffledChars, playerGuess, difficulty } = useContext(GameContext);
+    const { unChooseChar, chooseChar, gameData } = useContext(GameContext);
+
+    const { shuffledChars, playerGuess, difficulty } = gameData
 
 
     const handleCharClick = (char: string, index: number) => {
