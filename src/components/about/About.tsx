@@ -13,7 +13,7 @@ export default function About() {
 
     return (
         <Modal isOpen={aboutVis} onClose={onClose}>
-            <div className="flex flex-col p-10 gap-y-3">
+            <div className="flex flex-col p-10 select-none gap-y-3">
                 <h1 className="text-3xl text-gray-700 dark:text-gray-300">
                     About Game
                 </h1>

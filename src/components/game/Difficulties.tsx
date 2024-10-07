@@ -4,12 +4,13 @@ import { type TDifficulty, GameContext } from "../../context/GameContext";
 
 export default function Difficulties() {
 
+    const { difficulty, setDifficulty } = useContext(GameContext);
+
     const btnsContainerRef = useRef<HTMLDivElement | null>(null);
     const easyBtnRef = useRef<HTMLButtonElement | null>(null);
     const mediumBtnRef = useRef<HTMLButtonElement | null>(null);
     const hardBtnRef = useRef<HTMLButtonElement | null>(null);
 
-    const { difficulty, setDifficulty } = useContext(GameContext);
     const [left, setLeft] = useState<number>(0);
     const [width, setWidth] = useState<string>('');
 

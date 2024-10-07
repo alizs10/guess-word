@@ -32,6 +32,17 @@ export default function Modal({ children, isOpen, onClose }: ModalProps) {
     ...swipeableConfig,
   });
 
+  const modalBodyHandlers = useSwipeable({
+
+    onSwipedDown: (eventData) => {
+      const { deltaY } = eventData;
+      if (deltaY > 100) {
+        onClose()
+      }
+    },
+    ...swipeableConfig,
+  });
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -54,9 +65,10 @@ export default function Modal({ children, isOpen, onClose }: ModalProps) {
             onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
               event.stopPropagation()
             }}
+            {...modalBodyHandlers}
             transition={{ duration: moving ? 0.1 : .3, bounce: 'none' }}
-
             className={`fixed max-w-[600px]  top-auto z-[9991] left-1/2 w-full -translate-x-1/2 bottom-0 rounded-t-3xl bg-container flex flex-col`}>
+
 
             <div {...handlers} className="absolute top-0 w-1/3 p-3 -translate-x-1/2 bg-transparent left-1/2">
               <div className="w-full h-1 bg-gray-400 rounded-full dark:bg-gray-500"></div>
