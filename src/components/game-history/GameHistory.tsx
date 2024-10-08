@@ -10,13 +10,14 @@ export type TGameHistory = {
     difficulty: number;
     timer: number;
     guessCounter: number;
+    score: number;
 }
 
 export default function GameHistory() {
 
     const { historyVis, setHistoryVis, setClearHistoryConfirmVis } = useContext(AppContext)
 
-    let gameHistory: TGameHistory[] = getGameHistory();
+    let gameHistory: TGameHistory[] = getGameHistory(true);
 
     function handleClose() {
         setHistoryVis(false);
@@ -63,8 +64,9 @@ export default function GameHistory() {
                                     <th className="px-3 py-3">#</th>
                                     <th className="py-3 pl-3">Word</th>
                                     <th className="py-3 pl-3">Mode</th>
-                                    <th className="py-3 pl-3">Time(s)</th>
-                                    <th className="py-3 pl-3">Guess</th>
+                                    {/* <th className="py-3 pl-3">Time(s)</th> */}
+                                    {/* <th className="py-3 pl-3">Guess</th> */}
+                                    <th className="py-3 pl-3">Score</th>
                                 </tr>
                             </thead>
 
@@ -74,8 +76,9 @@ export default function GameHistory() {
                                         <td className="px-3 py-3">{index + 1}</td>
                                         <td className="py-3 pl-3 uppercase">{game.word}</td>
                                         <td className="py-3 pl-3">{game.difficulty === 0 ? 'Easy' : game.difficulty === 1 ? 'Medium' : 'Hard'}</td>
-                                        <td className="py-3 pl-3">{game.timer}</td>
-                                        <td className="py-3 pl-3">{game.guessCounter}</td>
+                                        {/* <td className="py-3 pl-3">{game.timer}</td> */}
+                                        {/* <td className="py-3 pl-3">{game.guessCounter}</td> */}
+                                        <td className="py-3 pl-3">{game.score.toFixed(1)}</td>
                                     </tr>
                                 ))}
                             </tbody>

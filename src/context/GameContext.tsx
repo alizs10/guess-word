@@ -1,5 +1,5 @@
 import { createContext, useEffect, useRef, useState } from "react";
-import { addGameToHistory, shuffle } from "../helpers/helpers";
+import { addGameToHistory, calcScore, shuffle } from "../helpers/helpers";
 import { generate } from "random-words";
 
 type TGameState = "still" | "hold" | "playing" | "won" | "lost";
@@ -21,6 +21,7 @@ export type TGameData = {
     guessCounter: number;
     timer: number;
     difficulty: TDifficulty;
+    score: number;
 }
 
 type GameContextType = {
@@ -68,6 +69,7 @@ const initialState: GameContextType = {
         guessCounter: 0,
         timer: 0,
         difficulty: 0,
+        score: 0,
     },
     setGameData: () => { },
 
@@ -107,6 +109,7 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
         guessCounter: 0,
         timer: 0,
         difficulty: 0,
+        score: 0,
     })
 
     // const [word, setWord] = useState<string>("sky");
@@ -218,12 +221,14 @@ export function GameContextProvider({ children }: { children: React.ReactNode })
                 clearInterval(timerRef.current)
 
 
+            setGameData(prevState => ({ ...prevState, score: calcScore(prevState.difficulty, prevState.timer, prevState.guessCounter) }))
             setGameState("won")
             addGameToHistory({
                 word: gameData.word,
                 difficulty: gameData.difficulty,
                 guessCounter: gameData.guessCounter,
                 timer: gameData.timer,
+                score: calcScore(gameData.difficulty, gameData.timer, gameData.guessCounter),
                 id: new Date().getTime()
             })
         }

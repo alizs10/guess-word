@@ -3,6 +3,7 @@ import { GameContext } from "../../context/GameContext"
 import GuessCounter from "../game/GuessCounter"
 import Difficulty from "../game/Difficulty"
 import Timer from "../game/Timer"
+import Score from "../game/Score"
 
 export default function WonScreen() {
 
@@ -13,7 +14,7 @@ export default function WonScreen() {
     return (
         <div className="flex-col gap-4 p-5 mt-20 rounded-2xl flex-center">
 
-            <h1 className="font-bold uppercase text-7xl text-emerald-600 dark:text-emerald-400">{gameData.word}</h1>
+            <h1 className={`font-bold uppercase ${gameData.word.length > 7 ? 'text-6xl' : 'text-7xl'} text-emerald-600 dark:text-emerald-400`}>{gameData.word}</h1>
 
             <div className="flex gap-2">
                 <Timer />
@@ -21,6 +22,7 @@ export default function WonScreen() {
                 <Difficulty />
             </div>
 
+            <Score />
             <h2 className="text-3xl font-bold text-black dark:text-white">Congratulations!</h2>
         </div>
     )
